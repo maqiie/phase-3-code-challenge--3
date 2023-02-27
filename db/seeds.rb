@@ -1,23 +1,35 @@
-puts "Deleting old data..."
-Product.destroy_all
-User.destroy_all
+puts "🌱 Seeding data..."
+# run a loop 50 times
+50.times do
+    # create a game with random data
+    product = Product.create(
+      name: Faker::Commerce.product_name,
+      price: rand(0..60), # random number between 0 and 60
+    )
+  
+    # # create between 1 and 5 reviews for each product
+    rand(1..5).times do
+      Review.create(
+        product_id: product.id,
+        star_rating: rand(1..5),
+        comment: Faker::Lorem.sentence         
+      )
+    end
+  end
+  # create users
+  50.times do
+    user = User.create(
+      name: Faker::Name.name
+    )
+  end
 
-puts "Creating users..."
-user1 = User.create(name: "Mohamed Amin")
-user2 = User.create(name: "Abdilaziz")
-user3 = User.create(name: "Ismahan")
+  # User#reviews
+  user1 = User.first
+  review2 = Review.second
+  user1.reviews << review2
 
-puts "Creating products..."
-product1 = Product.create(name: "Stapler")
-product2 = Product.create(name: "Whiteboard")
-product3 = Product.create(name: "Dry Erase Markers")
-product4 = Product.create(name: "Ballpoint Pens")
-product5 = Product.create(name: "Scotch Tape")
-
-puts "Creating reviews..."
-review1 = Review.create(star_rating: 1, comment: "Amazing product", product_id: product1.id, user_id: user1.id)
-review2 = Review.create(star_rating: 4, comment: "I love the product", product_id: product5.id, user_id: user1.id)
-review3 = Review.create(star_rating: 3, comment: "Looking forward to shop", product_id: product1.id, user_id: user2.id)
-review4 = Review.create(star_rating: 5, comment: "Product is quality", product_id: product4.id, user_id: user1.id)
-
-puts "Seeding done!"
+  user2 = User.second
+  review1 = Review.first
+  user2.reviews << review1
+  
+puts "🌱 Done seeding!"
